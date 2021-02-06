@@ -20,7 +20,7 @@ public class Main {
             userService.saveUser("Маша", "Ака Бум", (byte) 22);
             userService.saveUser("Женя", "Шульц", (byte) 30);
             userService.saveUser("Гена", "Хромой", (byte) 44);
-
+//
             List<User> users = userService.getAllUsers();
             users.forEach(System.out::println);
 
@@ -28,7 +28,7 @@ public class Main {
             userService.dropUsersTable();
             userService.connectionClose();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("ошибка тут - " + e);
         }
     }
 }
