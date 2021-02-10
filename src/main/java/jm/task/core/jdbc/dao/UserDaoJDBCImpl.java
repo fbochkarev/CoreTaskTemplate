@@ -22,6 +22,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() throws SQLException {
         PreparedStatement preparedStatement = null;
+        connection.setAutoCommit(false);
 
         String sql = "CREATE TABLE users(\n" +
                 "   id INT NOT NULL AUTO_INCREMENT,\n" +
@@ -35,6 +36,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLSyntaxErrorException e) {
             System.out.println("Таблица Users уже" +
                     " существует.");;
@@ -45,10 +47,12 @@ public class UserDaoJDBCImpl implements UserDao {
                 preparedStatement.close();
             }
         }
+        connection.setAutoCommit(true);
     }
 
     public void dropUsersTable() throws SQLException {
         PreparedStatement preparedStatement = null;
+        connection.setAutoCommit(false);
 
         String sql = "DROP TABLE users;";
 
@@ -56,6 +60,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLSyntaxErrorException e) {
             System.out.println("Таблицы Users не существует.");;
         } catch (SQLException e) {
@@ -65,10 +70,12 @@ public class UserDaoJDBCImpl implements UserDao {
                 preparedStatement.close();
             }
         }
+        connection.setAutoCommit(true);
     }
 
     public void saveUser(String name, String lastName, byte age) throws SQLException {
         PreparedStatement preparedStatement = null;
+        connection.setAutoCommit(false);
 
         String sql = "INSERT INTO jm_db.users (NAME, LASTNAME, AGE) " +
                 "VALUES(?, ?, ?)";
@@ -81,6 +88,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setLong(3, age);
 
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -89,10 +97,12 @@ public class UserDaoJDBCImpl implements UserDao {
             }
             System.out.println("User с именем – " + name + " добавлен в базу данных");
         }
+        connection.setAutoCommit(true);
     }
 
     public void removeUserById(long id) throws SQLException {
         PreparedStatement preparedStatement = null;
+        connection.setAutoCommit(false);
 
         String sql = "DELETE FROM jm_db.users WHERE ID=?";
 
@@ -102,6 +112,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setLong(1, id);
 
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -109,9 +120,11 @@ public class UserDaoJDBCImpl implements UserDao {
                 preparedStatement.close();
             }
         }
+        connection.setAutoCommit(true);
     }
 
     public List<User> getAllUsers() throws SQLException {
+        connection.setAutoCommit(false);
         List<User> userList = new ArrayList<>();
 
         String sql = "SELECT ID, NAME, LASTNAME, AGE " +
@@ -132,6 +145,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
                 userList.add(user);
             }
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -139,11 +153,13 @@ public class UserDaoJDBCImpl implements UserDao {
                 statement.close();
             }
         }
+        connection.setAutoCommit(true);
         return userList;
     }
 
     public void cleanUsersTable() throws SQLException {
         PreparedStatement preparedStatement = null;
+        connection.setAutoCommit(false);
 
         String sql = "TRUNCATE TABLE users;";
 
@@ -151,6 +167,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -159,5 +176,6 @@ public class UserDaoJDBCImpl implements UserDao {
             }
             System.out.println("Таблица очищена");
         }
+        connection.setAutoCommit(true);
     }
 }
