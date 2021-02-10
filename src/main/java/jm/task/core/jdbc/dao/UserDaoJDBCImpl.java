@@ -40,8 +40,11 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLSyntaxErrorException e) {
             System.out.println("Таблица Users уже" +
                     " существует.");;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (connection != null) {
+                connection.rollback();
+            }
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -63,8 +66,11 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
         } catch (SQLSyntaxErrorException e) {
             System.out.println("Таблицы Users не существует.");;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (connection != null) {
+                connection.rollback();
+            }
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -89,8 +95,11 @@ public class UserDaoJDBCImpl implements UserDao {
 
             preparedStatement.executeUpdate();
             connection.commit();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (connection != null) {
+                connection.rollback();
+            }
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -113,8 +122,11 @@ public class UserDaoJDBCImpl implements UserDao {
 
             preparedStatement.executeUpdate();
             connection.commit();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (connection != null) {
+                connection.rollback();
+            }
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -148,6 +160,9 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            if (connection != null) {
+                connection.rollback();
+            }
         } finally {
             if (statement != null) {
                 statement.close();
@@ -168,8 +183,11 @@ public class UserDaoJDBCImpl implements UserDao {
 
             preparedStatement.executeUpdate();
             connection.commit();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (connection != null) {
+                connection.rollback();
+            }
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
